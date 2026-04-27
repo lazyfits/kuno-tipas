@@ -359,6 +359,10 @@ const progressHint = document.querySelector("#progressHint");
 const progressFill = document.querySelector("#progressFill");
 const restartButton = document.querySelector("#restartButton");
 
+function isMobileViewport() {
+  return window.matchMedia("(max-width: 759px)").matches;
+}
+
 function readStorageValue(key) {
   try {
     return window.localStorage.getItem(key);
@@ -1242,7 +1246,7 @@ function renderStartScreen() {
         <div class="hero-logo-stage">
           <picture class="hero-logo-picture">
             <source srcset="./assets/lazyfit-logo-transparent.webp" type="image/webp" />
-            <img class="hero-logo-image" src="./assets/lazyfit-logo-transparent.png" alt="LazyFit logo" />
+            <img class="hero-logo-image" src="./assets/lazyfit-logo-transparent.png" alt="LazyFit logo" width="1800" height="1500" />
           </picture>
         </div>
 
@@ -1275,14 +1279,18 @@ function renderStartScreen() {
 
 function renderQuestionScreen() {
   const question = QUESTIONS[state.currentQuestion];
+  const questionVisualMarkup = `
+    ${renderQuestionVisual(question)}
+    <p class="visual-note">
+      Judesį atlik lėtai, be skausmo ir be staigaus "šokimo" į gylį.
+    </p>
+  `;
 
   const answersMarkup = question.answers
     .map((answer, index) => {
-      const isSelected = state.answers[state.currentQuestion] === index;
-
       return `
         <button
-          class="answer-button ${isSelected ? "is-selected" : ""}"
+          class="answer-button"
           type="button"
           data-action="answer"
           data-answer-index="${index}"
@@ -1316,14 +1324,15 @@ function renderQuestionScreen() {
           atsakysi, tuo aiškesnę kryptį parodys rezultatas.
         </div>
 
+        <div class="visual-panel visual-panel--mobile">
+          ${questionVisualMarkup}
+        </div>
+
         <div class="answers-grid">${answersMarkup}</div>
       </div>
 
-      <aside class="visual-panel">
-        ${renderQuestionVisual(question)}
-        <p class="visual-note">
-          Judesį atlik lėtai, be skausmo ir be staigaus "šokimo" į gylį.
-        </p>
+      <aside class="visual-panel visual-panel--desktop">
+        ${questionVisualMarkup}
       </aside>
     </section>
   `;
@@ -1506,6 +1515,7 @@ function renderExerciseCard(exercise) {
           src="${escapeHtml(exercise.previewImage)}"
           alt="${escapeHtml(exercise.name)} pratimo peržiūra"
           loading="lazy"
+          onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('is-fallback');"
         />
       </div>
       <div class="exercise-card-content">
@@ -1713,8 +1723,7 @@ function renderResultScreen() {
     ? `
         <section class="result-section-card" id="exerciseUnlockSection">
           <div class="result-section-head">
-            <span class="type-spectrum-tag">3</span>
-            <h2 class="result-section-title result-section-title--accent">Tavo rezultatui parinkau 3 pratimus</h2>
+            <h2 class="result-section-title result-section-title--accent">Tavo rezultatui parinkau šiuos pratimus</h2>
           </div>
           <div class="unlock-result-tools">
             ${unlockNoticeMarkup}
@@ -1731,8 +1740,7 @@ function renderResultScreen() {
     : `
         <section class="result-section-card" id="exerciseUnlockSection">
           <div class="result-section-head">
-            <span class="type-spectrum-tag">3</span>
-            <h2 class="result-section-title result-section-title--accent">Tavo rezultatui parinkau 3 pratimus</h2>
+            <h2 class="result-section-title result-section-title--accent">Tavo rezultatui parinkau šiuos pratimus</h2>
           </div>
           <p class="profile-summary">
             Įvesk email ir atrakink pratimus pagal savo rezultatą.
@@ -1898,7 +1906,7 @@ function syncResultPageUi() {
   if (state.shouldFocusUnlockInput) {
     const unlockInput = document.querySelector("#unlockEmailInput");
 
-    if (unlockInput instanceof HTMLInputElement) {
+    if (unlockInput instanceof HTMLInputElement && !isMobileViewport()) {
       window.requestAnimationFrame(() => unlockInput.focus());
     }
 
@@ -1909,9 +1917,15 @@ function syncResultPageUi() {
     const exerciseSection = document.querySelector("#exerciseUnlockSection");
 
     if (exerciseSection instanceof HTMLElement) {
-      window.requestAnimationFrame(() => {
-        exerciseSection.scrollIntoView({ behavior: "smooth", block: "start" });
-      });
+      const scrollDelay = isMobileViewport() ? 260 : 0;
+
+      window.setTimeout(() => {
+        const topPosition = Math.max(window.scrollY + exerciseSection.getBoundingClientRect().top - 12, 0);
+        window.scrollTo({
+          top: topPosition,
+          behavior: "smooth",
+        });
+      }, scrollDelay);
     }
 
     state.shouldScrollToExercises = false;
@@ -2164,6 +2178,9 @@ document.addEventListener("submit", async (event) => {
     state.emailError = "";
     state.emailSubmitted = true;
     state.exercisesUnlocked = true;
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     state.unlockModalOpen = false;
     state.unlockPromptOpen = false;
     state.unlockMessage = "Pratimai atrakinti ✅";
@@ -2179,6 +2196,9 @@ document.addEventListener("submit", async (event) => {
     state.emailError = "";
     state.emailSubmitted = true;
     state.exercisesUnlocked = true;
+    if (document.activeElement instanceof HTMLElement) {
+      document.activeElement.blur();
+    }
     state.unlockModalOpen = false;
     state.unlockPromptOpen = false;
     state.unlockMessage = "Pratimai atrakinti ✅";
