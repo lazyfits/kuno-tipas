@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="lt">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LazyFit Body Check</title>
+    <meta
+      name="description"
+      content="LazyFit Body Check - trumpas 2 minučių judesio testas su aiškiu rezultatu ir kitu žingsniu."
+    />
+    <link rel="stylesheet" href="./styles.css?v=9" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <div class="ambient ambient-one" aria-hidden="true"></div>
+      <div class="ambient ambient-two" aria-hidden="true"></div>
+
+      <section class="app-card" id="appCard">
+        <header class="app-topbar">
+          <div class="brand-lockup">
+            <span class="brand-chip">LazyFit Body Check</span>
+            <p class="brand-copy">Trumpas judesio savęs įsivertinimas</p>
+          </div>
+
+          <div class="topbar-tools">
+            <div class="progress-shell is-hidden" id="progressShell" aria-hidden="true">
+              <div class="progress-label">
+                <span id="progressText">1 / 6</span>
+                <span id="progressHint">Testo eiga</span>
+              </div>
+              <div class="progress-bar" aria-hidden="true">
+                <span id="progressFill"></span>
+              </div>
+            </div>
+
+            <button class="ghost-button is-hidden" id="restartButton" type="button">
+              Pradėti iš naujo
+            </button>
+          </div>
+        </header>
+
+        <div class="screen-container" id="screenContainer" aria-live="polite"></div>
+      </section>
+    </main>
+
+    <script type="module" src="./app.js?v=11"></script>
+  </body>
+</html>
