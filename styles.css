@@ -439,11 +439,22 @@ button {
   box-shadow: 0 10px 24px rgba(20, 35, 34, 0.04);
 }
 
-.answer-button:hover,
+.answer-button:focus {
+  outline: none;
+}
+
 .answer-button:focus-visible {
   border-color: rgba(96, 152, 142, 0.4);
   background: rgba(96, 152, 142, 0.08);
   transform: translateY(-2px);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .answer-button:hover {
+    border-color: rgba(96, 152, 142, 0.4);
+    background: rgba(96, 152, 142, 0.08);
+    transform: translateY(-2px);
+  }
 }
 
 .answer-title {
@@ -2054,17 +2065,21 @@ button {
     gap: 16px;
   }
 
-  .screen--question .screen-copy {
+  .screen--question .screen-copy,
+  .screen--insight .screen-copy {
     gap: 14px;
   }
 
-  .visual-panel--mobile {
+  .screen--question .visual-panel--mobile,
+  .screen--insight .visual-panel--mobile {
     display: grid;
     min-height: auto;
     padding: 16px;
+    margin-bottom: 2px;
   }
 
-  .visual-panel--desktop {
+  .screen--question .visual-panel--desktop,
+  .screen--insight .visual-panel--desktop {
     display: none;
   }
 

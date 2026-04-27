@@ -363,6 +363,32 @@ function isMobileViewport() {
   return window.matchMedia("(max-width: 759px)").matches;
 }
 
+function scrollPageToTop() {
+  try {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  } catch (_error) {
+    window.scrollTo(0, 0);
+  }
+
+  if (document.documentElement) {
+    document.documentElement.scrollTop = 0;
+  }
+
+  if (document.body) {
+    document.body.scrollTop = 0;
+  }
+}
+
+function openUnlockModal() {
+  state.unlockPromptOpen = false;
+  state.unlockModalOpen = true;
+  state.emailError = "";
+  state.unlockConsentError = "";
+  state.unlockSubmitting = false;
+  state.shouldFocusUnlockInput = true;
+  render();
+}
+
 function readStorageValue(key) {
   try {
     return window.localStorage.getItem(key);
@@ -951,6 +977,8 @@ function createBodyTypeMeaning(bodyTypeKey) {
 
 function createLoadProfileDetails(scores, pelvisLoadProfile) {
   const logicPoints = [];
+  const hasSupportAsymmetry = scores.leftSupportLimited || scores.rightSupportLimited;
+  const hasRotationAsymmetry = scores.leftRotationLimited || scores.rightRotationLimited;
 
   if (scores.leftSupportLimited) {
     logicPoints.push("Balanse sunkiau stovėti ant kairės kojos.");
@@ -961,11 +989,11 @@ function createLoadProfileDetails(scores, pelvisLoadProfile) {
   }
 
   if (scores.leftRotationLimited) {
-    logicPoints.push("Sukantis sunkiau eiti į kairę pusę.");
+    logicPoints.push("Rotacija į kairę pusę mažesnė.");
   }
 
   if (scores.rightRotationLimited) {
-    logicPoints.push("Sukantis sunkiau eiti į dešinę pusę.");
+    logicPoints.push("Rotacija į dešinę pusę mažesnė.");
   }
 
   if (!logicPoints.length) {
@@ -987,6 +1015,32 @@ function createLoadProfileDetails(scores, pelvisLoadProfile) {
       title: "Daugiau svorio į kairę",
       summary:
         "Testas rodo, kad daugiau svorio gali perkelti į kairę kūno pusę.",
+      showLogicPoints: true,
+      logicPoints,
+    };
+  }
+
+  if (hasRotationAsymmetry && !hasSupportAsymmetry) {
+    const rotationTitle = scores.leftRotationLimited
+      ? "Mažesnė rotacija į kairę"
+      : scores.rightRotationLimited
+        ? "Mažesnė rotacija į dešinę"
+        : "Rotacija tarp pusių nevienoda";
+
+    return {
+      title: rotationTitle,
+      summary:
+        "Vienos kojos balanse didelio skirtumo nesimato, bet sukantis viena pusė juda mažiau.",
+      showLogicPoints: true,
+      logicPoints,
+    };
+  }
+
+  if (hasSupportAsymmetry || hasRotationAsymmetry) {
+    return {
+      title: "Tarp pusių matosi skirtumas",
+      summary:
+        "Testai rodo, kad tarp pusių dar yra skirtumas: viena pusė gali prasčiau laikyti atramą arba suktis mažiau.",
       showLogicPoints: true,
       logicPoints,
     };
@@ -1305,6 +1359,10 @@ function renderQuestionScreen() {
   return `
     <section class="screen screen--question">
       <div class="screen-copy">
+        <div class="visual-panel visual-panel--mobile">
+          ${questionVisualMarkup}
+        </div>
+
         <div class="question-head">
           <div class="question-kicker">
             <span class="section-tag">Testas ${state.currentQuestion + 1} iš ${QUESTIONS.length}</span>
@@ -1322,10 +1380,6 @@ function renderQuestionScreen() {
         <div class="question-hint">
           Pasirink variantą, kuris labiausiai atitinka tavo situaciją šiandien. Kuo tiksliau
           atsakysi, tuo aiškesnę kryptį parodys rezultatas.
-        </div>
-
-        <div class="visual-panel visual-panel--mobile">
-          ${questionVisualMarkup}
         </div>
 
         <div class="answers-grid">${answersMarkup}</div>
@@ -1346,9 +1400,20 @@ function renderInsightScreen() {
     return renderQuestionScreen();
   }
 
+  const questionVisualMarkup = `
+    ${renderQuestionVisual(question)}
+    <p class="visual-note">
+      Kiekvienas atsakymas duoda mažą užuominą apie tavo bendrą judesio kryptį.
+    </p>
+  `;
+
   return `
     <section class="screen screen--insight">
       <div class="screen-copy">
+        <div class="visual-panel visual-panel--mobile">
+          ${questionVisualMarkup}
+        </div>
+
         <span class="section-tag">Trumpa įžvalga</span>
         <h1>${escapeHtml(upperFirst(question.summaryLabel))}</h1>
 
@@ -1372,11 +1437,8 @@ function renderInsightScreen() {
         </p>
       </div>
 
-      <aside class="visual-panel">
-        ${renderQuestionVisual(question)}
-        <p class="visual-note">
-          Kiekvienas atsakymas duoda mažą užuominą apie tavo bendrą judesio kryptį.
-        </p>
+      <aside class="visual-panel visual-panel--desktop">
+        ${questionVisualMarkup}
       </aside>
     </section>
   `;
@@ -2086,13 +2148,12 @@ document.addEventListener("click", (event) => {
   }
 
   if (action === "open-unlock-modal") {
-    state.unlockPromptOpen = false;
-    state.unlockModalOpen = true;
-    state.emailError = "";
-    state.unlockConsentError = "";
-    state.unlockSubmitting = false;
-    state.shouldFocusUnlockInput = true;
-    render();
+    if (isMobileViewport()) {
+      scrollPageToTop();
+      window.setTimeout(openUnlockModal, 220);
+      return;
+    }
+    openUnlockModal();
     return;
   }
 
