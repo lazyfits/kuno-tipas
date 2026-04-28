@@ -1715,7 +1715,7 @@ function renderConsultationCta() {
     : "";
   const consultationPreviewPages = [
     2, 5, 6, 7, 8, 9, 10, 11, 12, 13,
-    14, 15, 16, 18, 20, 21, 22, 23, 24, 25,
+    14, 15, 16, 18, 20, 21, 23, 24, 25,
     26, 27, 28, 29, 30,
   ];
   const consultationPreviewPagesMarkup = consultationPreviewPages
@@ -1724,7 +1724,7 @@ function renderConsultationCta() {
         <article class="consultation-preview-page">
           <img
             class="consultation-preview-image"
-            src="./assets/report-preview/page-${String(pageNumber).padStart(2, "0")}.png?v=3"
+            src="./assets/report-preview/page-${String(pageNumber).padStart(2, "0")}.png?v=4"
             alt=""
             loading="lazy"
             decoding="async"
@@ -1738,9 +1738,16 @@ function renderConsultationCta() {
   return `
     <section class="result-section-card consultation-cta-card">
       <div class="consultation-cta-copy">
+        <span class="consultation-offer-chip">Pilna biomechanikos konsultacija</span>
         <h2 class="result-section-title result-section-title--accent">
-          Jei nori geriau jaustis ir greičiau pasiekti rezultatų, nepalik to spėliojimui
+          O kas toliau?
         </h2>
+        <p class="consultation-lead">
+          Jei nori geriau jaustis ir greičiau pasiekti rezultatų, nepalik to spėliojimui.
+        </p>
+        <p class="consultation-consultation-note">
+          Žemiau gali pažymėti, ar tave labiau domina gyva, ar online biomechanikos konsultacija.
+        </p>
         <p class="profile-summary">
           Testas parodo bendrą kryptį, bet tik pilna biomechanikos konsultacija leidžia aiškiai pamatyti,
           kas tavo kūne riboja judesį ir progresą. Kai tiksliai žinai, kokius pratimus atlikti,
@@ -1770,7 +1777,7 @@ function renderConsultationCta() {
       <div class="consultation-preview-card" aria-hidden="true">
         <div class="consultation-preview-copy">
           <span class="consultation-preview-chip">Pilnos analizės pavyzdys</span>
-          <strong>25+ lapų personalizuotos informacijos</strong>
+          <strong>24+ lapų personalizuotos informacijos</strong>
           <p>Matai analizės stilių, išdėstymą ir bendrą vaizdą. Žemiau gali prascrollinti didžiąją dalį pavyzdinės ataskaitos.</p>
         </div>
         <div class="consultation-preview-shell">

@@ -1171,6 +1171,33 @@ button {
   gap: 14px;
 }
 
+.consultation-offer-chip {
+  display: inline-flex;
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(96, 152, 142, 0.12);
+  color: var(--accent-deep);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.consultation-lead {
+  margin: -2px 0 0;
+  color: var(--text);
+  font-size: clamp(1.1rem, 2.4vw, 1.3rem);
+  font-weight: 700;
+  line-height: 1.35;
+}
+
+.consultation-consultation-note {
+  margin: -2px 0 0;
+  color: var(--accent-deep);
+  font-size: 0.96rem;
+  font-weight: 600;
+  line-height: 1.55;
+}
+
 .consultation-summary-list .summary-bullet {
   background: rgba(255, 255, 255, 0.88);
 }
@@ -1623,9 +1650,9 @@ button {
   position: fixed;
   left: 16px;
   right: 16px;
-  top: auto;
-  bottom: calc(106px + env(safe-area-inset-bottom, 0px));
-  transform: none;
+  top: 58%;
+  bottom: auto;
+  transform: translateY(-50%);
   z-index: 35;
   display: grid;
   gap: 10px;
