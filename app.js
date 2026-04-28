@@ -64,7 +64,7 @@ const QUESTIONS = [
   {
     id: "deep-squat",
     pose: "squat",
-    imageSrc: "./assets/tests/gilus_pritupimas.png?v=4",
+    imageSrc: "./assets/tests/gilus_pritupimas.png?v=5",
     title: "2. Gilus pritūpimas",
     summaryLabel: "gilus pritūpimas",
     summaryEligible: true,
