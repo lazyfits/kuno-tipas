@@ -157,7 +157,7 @@ const QUESTIONS = [
     summaryLabel: "liemens rotacija",
     summaryEligible: true,
     instruction:
-      "Sėdėdamas ar stovėdamas pasisuk į kairę ir į dešinę. Įvertink, ar abi pusės jaučiasi panašiai.",
+      "Sėdėdamas ar stovėdamas pasisuk į kairę ir į dešinę nekeliant bei nepasukant pėdų (pėdos turi būti lygiagrečios). Įvertink ar abi pusės jaučiasi panašiai.",
     answers: [
       {
         label: "Abi pusės panašios",
@@ -939,7 +939,7 @@ function createDisplayedBodyType(rawBodyType, dominantType, percentages) {
       name: "Platesnis tipas",
       shortLabel: "Platesnis",
       explanation:
-        "Pagal testą labiau panašu į platesnį tipą.",
+        "Pagal testą labiau panašu, kad turi platesnį šonkaulių lanką.",
       percent: dominantPercent,
     };
   }
@@ -1325,7 +1325,7 @@ function renderQuestionScreen() {
   const questionVisualMarkup = `
     ${renderQuestionVisual(question)}
     <p class="visual-note">
-      Judesį atlik lėtai, be skausmo ir be staigaus "šokimo" į gylį.
+      Judesį atlik lėtai, neskubant
     </p>
   `;
 
