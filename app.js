@@ -1,4 +1,4 @@
-import exercises from "./src/data/exercises.js?v=3";
+import exercises from "./src/data/exercises.js?v=4";
 
 const RESULT_SCORE_KEYS = [
   "narrowScore",

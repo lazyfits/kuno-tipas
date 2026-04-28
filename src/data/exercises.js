@@ -11,7 +11,7 @@ const exercises = [
     setsReps: "2×6",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/af820c0e-27e7-402a-ace5-908652d65a4e",
-    previewImage: "./assets/exercise-previews/breathing-rotation.png",
+    previewImage: "./assets/exercise-previews/breathing-rotation.jpg",
   },
   {
     id: "zercher-squat",
@@ -24,7 +24,7 @@ const exercises = [
     setsReps: "2×8",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/0613e60d-8db4-4a1e-9474-c2248f630a6e",
-    previewImage: "./assets/movement-deep-squat.png",
+    previewImage: "./assets/exercise-previews/zercher-squat.jpg",
   },
   {
     id: "side-plank-lift",
@@ -37,7 +37,7 @@ const exercises = [
     setsReps: "2×8",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/c3ac8ec3-aeb8-4072-bd40-d1dbfcc71d31",
-    previewImage: "./assets/movement-single-leg-balance.png",
+    previewImage: "./assets/exercise-previews/side-plank-lift.jpg",
   },
 
   // 🔹 NARROW
@@ -52,7 +52,7 @@ const exercises = [
     setsReps: "2×30 sek",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/9521c5e6-6d60-49ba-a41a-4166ef06e82b",
-    previewImage: "./assets/movement-toe-touch.png",
+    previewImage: "./assets/exercise-previews/forward-breathing.jpg",
   },
   {
     id: "pullover",
@@ -65,7 +65,7 @@ const exercises = [
     setsReps: "2×10",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/c880c519-4aeb-4e3f-a410-868c413b9abc",
-    previewImage: "./assets/movement-overhead-reach.png",
+    previewImage: "./assets/exercise-previews/pullover.jpg",
   },
   {
     id: "rdl",
@@ -78,7 +78,7 @@ const exercises = [
     setsReps: "2×8",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/9bf824b4-4518-403f-ba77-c9da0d2b220e",
-    previewImage: "./assets/movement-toe-touch.png",
+    previewImage: "./assets/exercise-previews/rdl.jpg",
   },
 
   // 🔹 MIXED
@@ -93,7 +93,7 @@ const exercises = [
     setsReps: "2×30 sek",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/b379d352-1439-4fe7-bcb1-ca08353f1a40",
-    previewImage: "./assets/movement-deep-squat.png",
+    previewImage: "./assets/exercise-previews/deep-squat-reach.jpg",
   },
   {
     id: "mixed-zercher",
@@ -106,7 +106,7 @@ const exercises = [
     setsReps: "2×8",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/0613e60d-8db4-4a1e-9474-c2248f630a6e",
-    previewImage: "./assets/movement-deep-squat.png",
+    previewImage: "./assets/exercise-previews/zercher-squat.jpg",
   },
   {
     id: "mixed-rdl",
@@ -119,7 +119,7 @@ const exercises = [
     setsReps: "2×8",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/9bf824b4-4518-403f-ba77-c9da0d2b220e",
-    previewImage: "./assets/movement-toe-touch.png",
+    previewImage: "./assets/exercise-previews/rdl.jpg",
   },
   {
     id: "front-foot-elevated-lunge",
@@ -132,7 +132,7 @@ const exercises = [
     setsReps: "2×8",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/1b5bf8c4-6299-4058-a1be-7267ff0d2b11",
-    previewImage: "./assets/movement-single-leg-balance.png",
+    previewImage: "./assets/exercise-previews/front-foot-elevated-lunge.jpg",
   },
   {
     id: "rear-foot-elevated-lunge",
@@ -145,7 +145,7 @@ const exercises = [
     setsReps: "2×8",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/161abcf1-5996-4bf4-9a5a-48dd12e46ab5",
-    previewImage: "./assets/movement-single-leg-balance.png",
+    previewImage: "./assets/exercise-previews/rear-foot-elevated-lunge.jpg",
   },
 ];
 
