@@ -1,4 +1,4 @@
-import exercises from "./src/data/exercises.js";
+import exercises from "./src/data/exercises.js?v=2";
 
 const RESULT_SCORE_KEYS = [
   "narrowScore",
@@ -668,7 +668,7 @@ function createProfileSummary(
     return "Tai nereiškia, kad kažkas blogai. Tiesiog vieni judesiai tau seksis lengviau, o kiti prašys daugiau stabilumo.";
   }
 
-  return "Tai nereiškia, kad kažkas blogai. Tiesiog pas tave matosi ir siauresnio, ir platesnio tipo bruožų.";
+  return "Tai visiškai normalu – tavo kūnas turi abiejų tipų savybių.";
 }
 
 function createCompensationText(scores, bodyTypeKey, pelvisLoadProfileKey) {
@@ -928,7 +928,7 @@ function createDisplayedBodyType(rawBodyType, dominantType, percentages) {
       name: "Ir siauresnio, ir platesnio tipo bruožai",
       shortLabel: "Mišrus",
       explanation:
-        "Pagal testą pas tave matosi ir siauresnio, ir platesnio tipo bruožų.",
+        "Pagal testą pas tave matosi tiek siauresnio, tiek platesnio šonkaulių tipo bruožų.",
       percent: dominantPercent,
     };
   }
@@ -982,6 +982,15 @@ function createLoadProfileDetails(scores, pelvisLoadProfile) {
   const logicPoints = [];
   const hasSupportAsymmetry = scores.leftSupportLimited || scores.rightSupportLimited;
   const hasRotationAsymmetry = scores.leftRotationLimited || scores.rightRotationLimited;
+  const pelvisDirection = scores.leftRotationLimited
+    ? "left"
+    : scores.rightRotationLimited
+      ? "right"
+      : scores.rightSupportLimited
+        ? "left"
+        : scores.leftSupportLimited
+          ? "right"
+          : null;
 
   if (scores.leftSupportLimited) {
     logicPoints.push("Balanse sunkiau stovėti ant kairės kojos.");
@@ -1003,37 +1012,21 @@ function createLoadProfileDetails(scores, pelvisLoadProfile) {
     logicPoints.push("Vienos kojos balanse ir atliekant rotacijos testą aiškaus skirtumo tarp pusių nesimato.");
   }
 
-  if (pelvisLoadProfile.key === "right_dominant") {
+  if (pelvisDirection === "left") {
     return {
-      title: "Daugiau svorio į dešinę",
+      title: "Tikėtina, kad dubuo labiau pasisukęs į kairę",
       summary:
-        "Testas rodo, kad daugiau svorio gali perkelti į dešinę kūno pusę.",
+        "Tai labiausiai matosi iš rotacijos ir atramos testų tarp kūno pusių.",
       showLogicPoints: true,
       logicPoints,
     };
   }
 
-  if (pelvisLoadProfile.key === "left_dominant") {
+  if (pelvisDirection === "right") {
     return {
-      title: "Daugiau svorio į kairę",
+      title: "Tikėtina, kad dubuo labiau pasisukęs į dešinę",
       summary:
-        "Testas rodo, kad daugiau svorio gali perkelti į kairę kūno pusę.",
-      showLogicPoints: true,
-      logicPoints,
-    };
-  }
-
-  if (hasRotationAsymmetry && !hasSupportAsymmetry) {
-    const rotationTitle = scores.leftRotationLimited
-      ? "Mažesnė rotacija į kairę"
-      : scores.rightRotationLimited
-        ? "Mažesnė rotacija į dešinę"
-        : "Rotacija tarp pusių nevienoda";
-
-    return {
-      title: rotationTitle,
-      summary:
-        "Vienos kojos balanse didelio skirtumo nesimato, bet sukantis viena pusė juda mažiau.",
+        "Tai labiausiai matosi iš rotacijos ir atramos testų tarp kūno pusių.",
       showLogicPoints: true,
       logicPoints,
     };
@@ -1694,6 +1687,41 @@ function renderUnlockPrompt(isOpen) {
   `;
 }
 
+function renderTestimonialCard() {
+  return `
+    <section class="result-section-card testimonial-card">
+      <div class="testimonial-head">
+        <span class="testimonial-chip">Atsiliepimas po analizės</span>
+        <div class="testimonial-rating" aria-label="5 iš 5">
+          <span class="testimonial-stars">★★★★★</span>
+          <strong>5/5</strong>
+        </div>
+      </div>
+
+      <div class="testimonial-body">
+        <img
+          class="testimonial-avatar"
+          src="./assets/testimonials/monika-avatar-circle.png?v=1"
+          alt="Monikos nuotrauka"
+          loading="lazy"
+          decoding="async"
+        />
+
+        <div class="testimonial-copy">
+          <p class="testimonial-quote">
+            „Sužinojau, kur konkrečiai yra problemos ir ką tiksliai daryti, kad jas spręsčiau.
+            Taip pat pasitikrinau techniką, supratau, ką galiu daryti geriau ir kas mano kūnui
+            tinka labiausiai. Rekomenduočiau visiems, kurie nori ilgai ir laimingai sportuoti.“
+          </p>
+          <div class="testimonial-person">
+            <strong>Monika</strong>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+}
+
 function renderConsultationCta() {
   const isSubmitting = state.consultationSubmitting;
   const successMarkup = state.consultationMessage
@@ -1925,12 +1953,13 @@ function renderResultScreen() {
     state.emailError,
     state.unlockModalOpen,
   );
+  const testimonialMarkup = isUnlocked ? renderTestimonialCard() : "";
   const consultationCtaMarkup = isUnlocked ? renderConsultationCta() : "";
 
   return `
     <section class="screen screen--result">
       <div class="screen-copy screen-copy--result">
-        <h1>Tavo judesio profilis</h1>
+        <h1>Ką apie tave parodė testas</h1>
 
         <div class="profile-card profile-card--hero">
           <span class="profile-name">${escapeHtml(profileChipLabel)}</span>
@@ -1997,6 +2026,7 @@ function renderResultScreen() {
         </section>
 
         ${exerciseUnlockSectionMarkup}
+        ${testimonialMarkup}
         ${consultationCtaMarkup}
 
         <p class="support-note">
