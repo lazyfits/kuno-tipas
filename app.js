@@ -1295,16 +1295,16 @@ function renderStartScreen() {
 
         <div class="screen-copy start-copy hero-copy">
           <span class="section-tag">2 min. savikontrolė</span>
-          <h1>2 min. testas: sužinok, kas riboja tavo kūną</h1>
+          <h1>Per 2 min. sužinok, kas iš tikrųjų riboja tavo kūno judėjimą</h1>
           <p class="screen-lead">
-            Per ${QUESTIONS.length} trumpus žingsnius pamatysi, kuris judesys atrodo lengvesnis,
-            kur kūnas stringa labiau ir kokią kryptį rodo tavo testai.
+            Per ${QUESTIONS.length} trumpus žingsnius sužinosi, kur stringa tavo kūnas,
+            ir gausi aiškius pratimus, kurie padės tai išspręsti.
           </p>
 
           <div class="chip-row">
-            <span class="info-chip">${QUESTIONS.length} trumpi žingsniai</span>
-            <span class="info-chip">~2 minutės</span>
-            <span class="info-chip">Be įrangos</span>
+            <span class="info-chip">✔ Užtruksi mažiau nei 2 min</span>
+            <span class="info-chip">✔ Jokios įrangos</span>
+            <span class="info-chip">✔ Rezultatą gausi iškart</span>
           </div>
 
           <div class="screen-actions">
