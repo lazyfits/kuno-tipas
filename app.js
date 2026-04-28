@@ -949,7 +949,7 @@ function createDisplayedBodyType(rawBodyType, dominantType, percentages) {
     name: "Siauresnis tipas",
     shortLabel: "Siauresnis",
     explanation:
-      "Pagal testą labiau panašu į siauresnį tipą.",
+      "Pagal testą labiau panašu į siauresnį šonkaulių tipą.",
     percent: dominantPercent,
   };
 }
