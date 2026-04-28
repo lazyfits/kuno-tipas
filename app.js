@@ -28,7 +28,7 @@ const QUESTIONS = [
       "Atsistok tiesiai, kojos klubų plotyje, ir lėtai lenkis žemyn. Įvertink, kiek arti grindų nusileidžia rankos. Leisdamasis laikyk kelius pilnai ištiestus, nes jei jie pradės linkti, testo vaizdas gali būti netikslus.",
     answers: [
       {
-        label: "Nesiekiu daugiau nei ~1 delnu",
+        label: "Rankos šiek tiek žemiau nei keliai",
         note: "Rankos lieka gana aukštai, judesys trumpas.",
         insight:
           "Šitas testas rodo, kad lenkimosi metu kūnas gali rinktis trumpesnį kelią.",
@@ -1554,7 +1554,7 @@ function renderLockedExerciseCards() {
 function renderStickyUnlockCta() {
   return `
     <button class="sticky-unlock-cta" type="button" data-action="open-unlock-modal">
-      Atrakink pratimus !
+      Atrakink pratimus 🔥
     </button>
   `;
 }
@@ -1955,8 +1955,9 @@ function syncResultPageUi() {
       const isExerciseSectionAlreadyVisible =
         exerciseSection instanceof HTMLElement &&
         exerciseSection.getBoundingClientRect().top <= window.innerHeight * 0.9;
+      const hasScrolledFarDown = window.scrollY > 220;
 
-      if (isExerciseSectionAlreadyVisible) {
+      if (isExerciseSectionAlreadyVisible || hasScrolledFarDown) {
         return;
       }
 
