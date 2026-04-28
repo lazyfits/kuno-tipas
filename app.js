@@ -1542,6 +1542,9 @@ function renderStickyUnlockCta() {
 }
 
 function renderExerciseCard(exercise) {
+  const previewSrc = exercise.previewImage.includes("?")
+    ? exercise.previewImage
+    : `${exercise.previewImage}?v=2`;
   const instructionMarkup = exercise.instructionText
     ? `
         <div class="exercise-extra-field">
@@ -1556,9 +1559,9 @@ function renderExerciseCard(exercise) {
       <div class="exercise-card-media">
         <img
           class="exercise-card-image"
-          src="${escapeHtml(exercise.previewImage)}"
+          src="${escapeHtml(previewSrc)}"
           alt="${escapeHtml(exercise.name)} pratimo peržiūra"
-          loading="lazy"
+          loading="eager"
           onerror="this.onerror=null;this.style.display='none';this.parentElement.classList.add('is-fallback');"
         />
       </div>
