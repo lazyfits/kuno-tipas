@@ -1160,6 +1160,144 @@ button {
   line-height: 1.6;
 }
 
+.consultation-cta-card {
+  display: grid;
+  gap: 18px;
+  overflow: hidden;
+}
+
+.consultation-cta-copy {
+  display: grid;
+  gap: 14px;
+}
+
+.consultation-summary-list .summary-bullet {
+  background: rgba(255, 255, 255, 0.88);
+}
+
+.consultation-value-card {
+  background:
+    linear-gradient(135deg, rgba(96, 152, 142, 0.16) 0%, rgba(139, 189, 135, 0.12) 100%);
+}
+
+.consultation-preview-card {
+  display: grid;
+  gap: 12px;
+}
+
+.consultation-preview-copy {
+  display: grid;
+  gap: 8px;
+}
+
+.consultation-preview-shell {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: clamp(360px, 58vw, 720px);
+  max-height: clamp(360px, 58vw, 720px);
+  border-radius: var(--radius-lg);
+  border: 1px solid rgba(96, 152, 142, 0.18);
+  background:
+    linear-gradient(180deg, rgba(240, 248, 246, 0.96) 0%, rgba(231, 242, 239, 0.96) 100%);
+  -webkit-overflow-scrolling: touch;
+}
+
+.consultation-preview-shell::after {
+  content: none;
+}
+
+.consultation-preview-pages {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+}
+
+.consultation-preview-page {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  border: 1px solid rgba(96, 152, 142, 0.12);
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 12px 28px rgba(20, 35, 34, 0.08);
+}
+
+.consultation-preview-image {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.consultation-preview-page-label {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.88);
+  color: var(--accent-deep);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.consultation-preview-chip {
+  display: inline-flex;
+  width: fit-content;
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--accent-deep);
+  font-size: 0.82rem;
+  font-weight: 700;
+}
+
+.consultation-preview-copy strong {
+  font-size: clamp(1.25rem, 3vw, 1.7rem);
+  line-height: 1.15;
+  letter-spacing: -0.03em;
+}
+
+.consultation-preview-copy p {
+  margin: 0;
+  max-width: 56ch;
+  color: var(--text-soft);
+  font-size: 0.96rem;
+  line-height: 1.6;
+}
+
+.consultation-cta-actions {
+  display: grid;
+  gap: 12px;
+}
+
+.consultation-button {
+  width: 100%;
+  justify-content: center;
+}
+
+.consultation-button--secondary {
+  background: rgba(34, 41, 44, 0.06);
+  color: var(--text);
+  box-shadow: none;
+}
+
+.consultation-button--secondary:hover,
+.consultation-button--secondary:focus-visible {
+  background: rgba(34, 41, 44, 0.1);
+  color: var(--text);
+}
+
+.consultation-success-note {
+  padding: 14px 16px;
+  border-radius: var(--radius-md);
+  background: rgba(96, 152, 142, 0.12);
+  color: var(--accent-deep);
+  font-size: 0.96rem;
+  font-weight: 700;
+  line-height: 1.55;
+}
+
 .exercise-plan {
   display: grid;
   gap: 12px;
@@ -1485,7 +1623,9 @@ button {
   position: fixed;
   left: 16px;
   right: 16px;
-  top: calc(18px + env(safe-area-inset-top, 0px));
+  top: auto;
+  bottom: calc(106px + env(safe-area-inset-bottom, 0px));
+  transform: none;
   z-index: 35;
   display: grid;
   gap: 10px;
@@ -1657,6 +1797,15 @@ button {
     width: min(100%, 520px);
     margin-top: 0;
   }
+
+  .consultation-preview-shell {
+    min-height: 320px;
+    max-height: 420px;
+  }
+
+  .consultation-preview-copy strong {
+    font-size: 1.2rem;
+  }
 }
 
 @media (min-width: 760px) {
@@ -1668,7 +1817,9 @@ button {
   }
 
   .unlock-prompt {
-    top: 24px;
+    top: clamp(180px, 26vh, 280px);
+    bottom: auto;
+    transform: none;
     left: auto;
     right: 24px;
     width: min(100%, 360px);
@@ -1692,6 +1843,10 @@ button {
   .unlock-result-tools .unlock-success-note:only-child {
     grid-column: 1 / -1;
   }
+
+  .consultation-cta-actions {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media print {
@@ -1709,7 +1864,8 @@ button {
   .sticky-unlock-cta,
   .unlock-prompt,
   .modal-backdrop,
-  .pdf-download-button {
+  .pdf-download-button,
+  .consultation-cta-card {
     display: none !important;
   }
 

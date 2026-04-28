@@ -342,6 +342,9 @@ const state = {
   exercisesUnlocked: false,
   unlockModalOpen: false,
   unlockMessage: "",
+  consultationSubmitting: false,
+  consultationInterest: "",
+  consultationMessage: "",
   shouldScrollToExercises: false,
   shouldFocusUnlockInput: false,
   unlockPromptOpen: false,
@@ -1639,6 +1642,26 @@ function buildUnlockPayload(emailValue) {
   };
 }
 
+function buildConsultationPayload(interestType) {
+  const normalizedEmail = state.emailValue || readStorageValue(EMAIL_STORAGE_KEY) || "";
+  const basePayload = buildUnlockPayload(normalizedEmail);
+  const normalizedInterest =
+    interestType === "live_consultation" ? "live_consultation" : "online_consultation";
+
+  return {
+    ...basePayload,
+    source: `lazyfit_body_check_${normalizedInterest}`,
+    submittedAt: new Date().toISOString(),
+    consultation: {
+      interestType: normalizedInterest,
+      label:
+        normalizedInterest === "live_consultation"
+          ? "Noriu gyvo susitikimo"
+          : "Noriu online susitikimo",
+    },
+  };
+}
+
 async function saveLeadToGoogleSheets(payload) {
   if (!GOOGLE_SHEETS_WEBHOOK_URL) {
     return;
@@ -1681,6 +1704,101 @@ function renderUnlockPrompt(isOpen) {
       <button class="primary-button unlock-prompt-button" type="button" data-action="open-unlock-modal">
         Atrakinti pratimus
       </button>
+    </section>
+  `;
+}
+
+function renderConsultationCta() {
+  const isSubmitting = state.consultationSubmitting;
+  const successMarkup = state.consultationMessage
+    ? `<div class="consultation-success-note">${escapeHtml(state.consultationMessage)}</div>`
+    : "";
+  const consultationPreviewPages = [
+    2, 5, 6, 7, 8, 9, 10, 11, 12, 13,
+    14, 15, 16, 18, 20, 21, 22, 23, 24, 25,
+    26, 27, 28, 29, 30,
+  ];
+  const consultationPreviewPagesMarkup = consultationPreviewPages
+    .map(
+      (pageNumber, displayIndex) => `
+        <article class="consultation-preview-page">
+          <img
+            class="consultation-preview-image"
+            src="./assets/report-preview/page-${String(pageNumber).padStart(2, "0")}.png?v=3"
+            alt=""
+            loading="lazy"
+            decoding="async"
+          />
+          <span class="consultation-preview-page-label">${displayIndex + 1} / ${consultationPreviewPages.length}</span>
+        </article>
+      `,
+    )
+    .join("");
+
+  return `
+    <section class="result-section-card consultation-cta-card">
+      <div class="consultation-cta-copy">
+        <h2 class="result-section-title result-section-title--accent">
+          Jei nori geriau jaustis ir greičiau pasiekti rezultatų, nepalik to spėliojimui
+        </h2>
+        <p class="profile-summary">
+          Testas parodo bendrą kryptį, bet tik pilna biomechanikos konsultacija leidžia aiškiai pamatyti,
+          kas tavo kūne riboja judesį ir progresą. Kai tiksliai žinai, kokius pratimus atlikti,
+          lengviau mažinti diskomfortą, judėti laisviau ir pasiekti geresnių rezultatų — ar tavo
+          tikslas būtų tiesiog geriau jaustis, ar augantys sėdmenys bei bicepsas.
+        </p>
+        <ul class="summary-list consultation-summary-list">
+          <li class="summary-bullet">
+            <span>Mažiau spėliojimo, daugiau aiškumo</span>
+          </li>
+          <li class="summary-bullet">
+            <span>Pratimai pagal tavo kūną, o ne bendri patarimai</span>
+          </li>
+          <li class="summary-bullet">
+            <span>Greitesnis progresas ir aiškesnis supratimas, kas tave stabdo</span>
+          </li>
+        </ul>
+        <div class="meaning-card consultation-value-card">
+          <strong>Po konsultacijos gausi</strong>
+          <p>
+            Personalizuotą analizę ir konkrečius pratimus su aiškiais nurodymais, pritaikytus
+            būtent tavo kūnui.
+          </p>
+        </div>
+      </div>
+
+      <div class="consultation-preview-card" aria-hidden="true">
+        <div class="consultation-preview-copy">
+          <span class="consultation-preview-chip">Pilnos analizės pavyzdys</span>
+          <strong>25+ lapų personalizuotos informacijos</strong>
+          <p>Matai analizės stilių, išdėstymą ir bendrą vaizdą. Žemiau gali prascrollinti didžiąją dalį pavyzdinės ataskaitos.</p>
+        </div>
+        <div class="consultation-preview-shell">
+          <div class="consultation-preview-pages">
+            ${consultationPreviewPagesMarkup}
+          </div>
+        </div>
+      </div>
+
+      <div class="consultation-cta-actions">
+        <button
+          class="primary-button consultation-button"
+          type="button"
+          data-action="consultation-live"
+          ${isSubmitting ? "disabled" : ""}
+        >
+          ${isSubmitting && state.consultationInterest === "live_consultation" ? "Žymima..." : "Noriu gyvo susitikimo"}
+        </button>
+        <button
+          class="secondary-button consultation-button consultation-button--secondary"
+          type="button"
+          data-action="consultation-online"
+          ${isSubmitting ? "disabled" : ""}
+        >
+          ${isSubmitting && state.consultationInterest === "online_consultation" ? "Žymima..." : "Noriu online susitikimo"}
+        </button>
+      </div>
+      ${successMarkup}
     </section>
   `;
 }
@@ -1820,6 +1938,7 @@ function renderResultScreen() {
     state.emailError,
     state.unlockModalOpen,
   );
+  const consultationCtaMarkup = isUnlocked ? renderConsultationCta() : "";
 
   return `
     <section class="screen screen--result">
@@ -1892,6 +2011,7 @@ function renderResultScreen() {
         </section>
 
         ${exerciseUnlockSectionMarkup}
+        ${consultationCtaMarkup}
 
         <p class="support-note">
           Tai nėra diagnozė. Tai tik trumpas testas, kuris parodo bendrą kryptį.
@@ -1954,8 +2074,8 @@ function syncResultPageUi() {
       const exerciseSection = document.querySelector("#exerciseUnlockSection");
       const isExerciseSectionAlreadyVisible =
         exerciseSection instanceof HTMLElement &&
-        exerciseSection.getBoundingClientRect().top <= window.innerHeight * 0.9;
-      const hasScrolledFarDown = window.scrollY > 220;
+        exerciseSection.getBoundingClientRect().top <= window.innerHeight * 0.42;
+      const hasScrolledFarDown = window.scrollY > 560;
 
       if (isExerciseSectionAlreadyVisible || hasScrolledFarDown) {
         return;
@@ -2072,6 +2192,9 @@ function restartTest() {
     state.emailSubmitted = false;
     state.unlockModalOpen = false;
     state.unlockMessage = "";
+    state.consultationSubmitting = false;
+    state.consultationInterest = "";
+    state.consultationMessage = "";
     state.shouldScrollToExercises = false;
     state.shouldFocusUnlockInput = false;
     state.unlockPromptOpen = false;
@@ -2110,6 +2233,9 @@ document.addEventListener("click", (event) => {
       state.emailSubmitted = false;
       state.unlockModalOpen = false;
       state.unlockMessage = "";
+      state.consultationSubmitting = false;
+      state.consultationInterest = "";
+      state.consultationMessage = "";
       state.shouldScrollToExercises = false;
       state.shouldFocusUnlockInput = false;
       state.unlockPromptOpen = false;
@@ -2185,6 +2311,35 @@ document.addEventListener("click", (event) => {
     state.ctaMessage =
       "Čia vėliau galima prijungti video įkėlimo formą arba individualios peržiūros užklausą.";
     render();
+    return;
+  }
+
+  if (action === "consultation-live" || action === "consultation-online") {
+    const interestType =
+      action === "consultation-live" ? "live_consultation" : "online_consultation";
+    const consultationPayload = buildConsultationPayload(interestType);
+
+    state.consultationSubmitting = true;
+    state.consultationInterest = interestType;
+    state.consultationMessage = "";
+    render();
+
+    saveLeadToGoogleSheets(consultationPayload)
+      .catch((error) => {
+        window.console.warn("Nepavyko išsiųsti konsultacijos pasirinkimo į Google Sheets:", error);
+      })
+      .finally(() => {
+        state.consultationSubmitting = false;
+        state.consultationInterest = interestType;
+        state.consultationMessage =
+          "Puiku, gavau tavo pasirinkimą. Susisieksiu su tavimi ir atsiųsiu tolimesnę informaciją.";
+        writeStorageValue(
+          "lazyfit_body_check_last_consultation_interest",
+          JSON.stringify(consultationPayload),
+        );
+        render();
+      });
+
     return;
   }
 
