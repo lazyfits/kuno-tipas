@@ -11,7 +11,7 @@ const exercises = [
     setsReps: "2×6",
     videoUrl:
       "https://iframe.mediadelivery.net/play/239542/af820c0e-27e7-402a-ace5-908652d65a4e",
-    previewImage: "./assets/movement-trunk-rotation.png",
+    previewImage: "./assets/exercise-previews/breathing-rotation.png",
   },
   {
     id: "zercher-squat",
