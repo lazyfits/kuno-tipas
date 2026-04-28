@@ -1075,23 +1075,9 @@ function createActionPlan(bodyTypeKey, pelvisLoadProfileKey) {
       previewImage: exercise.previewImage,
     }));
 
-  const explanationMap = {
-    wide:
-      pelvisLoadProfileKey === "balanced"
-        ? "Šie pratimai padės, nes testai rodo, kad pradžiai gali reikėti daugiau atsivėrimo ir ramesnio pagrindo."
-        : "Šie pratimai padės, nes testai rodo, kad pradžiai gali reikėti daugiau atsivėrimo ir tikslesnės atramos vienoje pusėje.",
-    narrow:
-      pelvisLoadProfileKey === "balanced"
-        ? "Šie pratimai padės, nes testai rodo, kad pradžiai gali reikėti daugiau pagrindo, stabilumo ir kontrolės."
-        : "Šie pratimai padės, nes testai rodo, kad pradžiai gali reikėti daugiau pagrindo, kontrolės ir darbo silpnesnėje atramoje.",
-    mixed:
-      pelvisLoadProfileKey === "balanced"
-        ? "Šie pratimai padės, nes testai rodo, kad pradžiai geriausiai tiktų subalansuotas pagrindas."
-        : "Šie pratimai padės, nes testai rodo, kad pradžiai tiktų subalansuotas pagrindas ir šiek tiek daugiau dėmesio vienai pusei.",
-  };
-
   return {
-    explanation: explanationMap[bodyTypeKey] || explanationMap.mixed,
+    explanation:
+      "Pagal testus matosi, kad tavo kūnui trūksta šių judesių, todėl šie pratimai ir yra prioritetas.",
     exercises: selectedExercises,
     asymmetryBlock: createAsymmetryExerciseBlock(),
   };
@@ -1745,24 +1731,18 @@ function renderConsultationCta() {
         <p class="consultation-lead">
           Jei nori geriau jaustis ir greičiau pasiekti rezultatų, nepalik to spėliojimui.
         </p>
-        <p class="consultation-consultation-note">
-          Žemiau gali pažymėti, ar tave labiau domina gyva, ar online biomechanikos konsultacija.
-        </p>
         <p class="profile-summary">
-          Testas parodo bendrą kryptį, bet tik pilna biomechanikos konsultacija leidžia aiškiai pamatyti,
-          kas tavo kūne riboja judesį ir progresą. Kai tiksliai žinai, kokius pratimus atlikti,
-          lengviau mažinti diskomfortą, judėti laisviau ir pasiekti geresnių rezultatų — ar tavo
-          tikslas būtų tiesiog geriau jaustis, ar augantys sėdmenys bei bicepsas.
+          Pilna biomechanikos konsultacija padeda aiškiai pamatyti, kas tavo kūne riboja judesį ir progresą.
         </p>
         <ul class="summary-list consultation-summary-list">
           <li class="summary-bullet">
-            <span>Mažiau spėliojimo, daugiau aiškumo</span>
+            <span>🔥 Mažiau spėliojimo, daugiau aiškumo</span>
           </li>
           <li class="summary-bullet">
-            <span>Pratimai pagal tavo kūną, o ne bendri patarimai</span>
+            <span>🎯 Pratimai pagal tavo kūną, o ne bendri patarimai</span>
           </li>
           <li class="summary-bullet">
-            <span>Greitesnis progresas ir aiškesnis supratimas, kas tave stabdo</span>
+            <span>✨ Greitesnis progresas ir aiškesnis supratimas, kas tave stabdo</span>
           </li>
         </ul>
         <div class="meaning-card consultation-value-card">
@@ -2012,8 +1992,7 @@ function renderResultScreen() {
           </div>
 
           <div class="meaning-card">
-            <strong>Šie pratimai padės, nes...</strong>
-            <p>${escapeHtml(actionPlan.explanation)}</p>
+            <strong>${escapeHtml(actionPlan.explanation)}</strong>
           </div>
         </section>
 

@@ -1190,16 +1190,15 @@ button {
   line-height: 1.35;
 }
 
-.consultation-consultation-note {
-  margin: -2px 0 0;
-  color: var(--accent-deep);
-  font-size: 0.96rem;
-  font-weight: 600;
-  line-height: 1.55;
-}
-
 .consultation-summary-list .summary-bullet {
   background: rgba(255, 255, 255, 0.88);
+  border-color: rgba(96, 152, 142, 0.18);
+  box-shadow: 0 8px 18px rgba(20, 35, 34, 0.05);
+}
+
+.consultation-summary-list .summary-bullet span {
+  color: var(--text);
+  font-weight: 600;
 }
 
 .consultation-value-card {
@@ -1650,7 +1649,7 @@ button {
   position: fixed;
   left: 16px;
   right: 16px;
-  top: 58%;
+  top: 54%;
   bottom: auto;
   transform: translateY(-50%);
   z-index: 35;
