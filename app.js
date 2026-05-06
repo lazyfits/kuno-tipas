@@ -1280,6 +1280,11 @@ function renderStartScreen() {
         <div class="hero-bloom hero-bloom--three"></div>
 
         <div class="hero-logo-stage">
+          <div class="hero-stickers" aria-hidden="true">
+            <span class="hero-sticker hero-sticker--free">NEMOKAMAI</span>
+            <span class="hero-sticker hero-sticker--plan">+ Pratimai pagal tavo kūną</span>
+            <span class="hero-sticker hero-sticker--after">Po testo</span>
+          </div>
           <picture class="hero-logo-picture">
             <source srcset="./assets/lazyfit-logo-transparent.webp" type="image/webp" />
             <img class="hero-logo-image" src="./assets/lazyfit-logo-transparent.png" alt="LazyFit logo" width="1800" height="1500" />
@@ -1287,7 +1292,6 @@ function renderStartScreen() {
         </div>
 
         <div class="screen-copy start-copy hero-copy">
-          <span class="section-tag">2 min. savikontrolė</span>
           <h1>Per 2 min. sužinok, kas iš tikrųjų riboja tavo kūno judėjimą</h1>
           <p class="screen-lead">
             Per ${QUESTIONS.length} trumpus žingsnius sužinosi, kur stringa tavo kūnas,
